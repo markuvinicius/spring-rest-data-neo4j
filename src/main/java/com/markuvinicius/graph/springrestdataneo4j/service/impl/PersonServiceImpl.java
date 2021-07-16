@@ -1,6 +1,7 @@
 package com.markuvinicius.graph.springrestdataneo4j.service.impl;
 
 import com.markuvinicius.graph.springrestdataneo4j.domain.Person;
+import com.markuvinicius.graph.springrestdataneo4j.exception.ResourceNotFoundException;
 import com.markuvinicius.graph.springrestdataneo4j.repository.PersonRepository;
 import com.markuvinicius.graph.springrestdataneo4j.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person findById(UUID id) { return personRepository.findById(id).get();  }
+    public Person findById(UUID id)  throws ResourceNotFoundException {
+        return personRepository
+                .findById(id)
+                .orElseThrow( () -> new ResourceNotFoundException("Person Not Found"));
+    }
 }

@@ -1,6 +1,7 @@
 package com.markuvinicius.graph.springrestdataneo4j.service;
 
 import com.markuvinicius.graph.springrestdataneo4j.domain.Person;
+import com.markuvinicius.graph.springrestdataneo4j.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,5 +13,5 @@ public interface PersonService {
 
     public Person save(Person person);
 
-    public Person findById(UUID id);
+    public Person findById(UUID id) throws ResourceNotFoundException;
 }

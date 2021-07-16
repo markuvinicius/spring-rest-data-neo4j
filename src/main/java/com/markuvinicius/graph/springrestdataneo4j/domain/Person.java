@@ -1,34 +1,46 @@
 package com.markuvinicius.graph.springrestdataneo4j.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Node("Person")
-@Data
 @AllArgsConstructor
 public class Person {
 
     @Id
+    @Getter @Setter
     private UUID id;
 
+    @Getter @Setter
     @Property("firstName")
     private String firstName;
 
+    @Getter @Setter
     @Property("lastName")
     private String lastName;
 
+    @Getter @Setter
     @Property("cnpj")
     private String cnpj;
 
-    //@Relationship(type="PARTNERSHIP", direction = Relationship.Direction.INCOMING)
-    //private Set<Person> partners;
+    @Getter
+    @Relationship(type="IS_PARTNER")
+    private Set<Partner> partnership;
 
-    @Relationship(type="PARTNERSHIP")
-    private Set<Partnership> partnership;
+    @Getter
+    @Relationship(type="IS_REPRESENTATIVE")
+    private Set<Representative> representatives;
+
+    public void setPartner(Partner partner){
+        this.partnership.add(partner);
+    }
+
+    public void setRepresentative(Representative representative){
+        this.representatives.add(representative);
+    }
 }
