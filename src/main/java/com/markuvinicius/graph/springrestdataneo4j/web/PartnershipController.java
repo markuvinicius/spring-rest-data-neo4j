@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface PartnershipController {
     public ResponseEntity<Person> postPartnership(UUID id , Partner partner);
 
-    public ResponseEntity<Set<Partner>> getAllPartners(UUID id);
+    public ResponseEntity<Set<Partner>> findPartnership(UUID id, String direction);
 }

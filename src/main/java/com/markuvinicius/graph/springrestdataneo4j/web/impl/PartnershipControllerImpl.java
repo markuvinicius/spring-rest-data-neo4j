@@ -7,14 +7,13 @@ import com.markuvinicius.graph.springrestdataneo4j.repository.PersonRepository;
 import com.markuvinicius.graph.springrestdataneo4j.service.PersonService;
 import com.markuvinicius.graph.springrestdataneo4j.web.PartnershipController;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/person/{id}/partnership")
@@ -39,9 +38,23 @@ public class PartnershipControllerImpl implements PartnershipController {
 
     @Override
     @GetMapping
-    @ApiOperation(value="Returns all parnership relations of a specific person vertix")
-    public ResponseEntity<Set<Partner>> getAllPartners(@PathVariable UUID id) throws ResourceNotFoundException{
-        Person statedPerson = personService.findById(id);
-        return new ResponseEntity( statedPerson.getPartnership() , HttpStatus.OK );
+    @ApiOperation(value="Returns partners of a specific person vertix towards an specific direction")
+    @ResponseBody
+    public ResponseEntity<Set<Partner>> findPartnership(@PathVariable UUID id,
+                                                       @ApiParam(
+                                                               name="direction",
+                                                               type="string",
+                                                               required = false,
+                                                               defaultValue = "outbound",
+                                                               value="direction toward partnership will be analysed" +
+                                                                       "inbound: retorna as pessoas nas quais a pessoa selecionada figura como sócio" +
+                                                                       "outbound: retorna os sócios que compõem a pessoa selecionada"
+                                                       )
+                                                       @RequestParam(required = false) String direction ) throws ResourceNotFoundException{
+
+        Set<Person> personSet = personService.findPartnership(id, Optional.of(direction));
+        return new ResponseEntity( personSet , HttpStatus.OK );
     }
+
+
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -36,5 +37,18 @@ public class PersonServiceImpl implements PersonService {
         return personRepository
                 .findById(id)
                 .orElseThrow( () -> new ResourceNotFoundException("Person Not Found"));
+    }
+
+    @Override
+    public Set<Person> findPartnership(UUID id, Optional<String> direction){
+        return direction.map( d -> this.findDirectedPartnership(id,d) ).orElseThrow( () -> new RuntimeException("Deu Ruim"));
+    }
+
+    private Set<Person> findDirectedPartnership(UUID id, String direction){
+        switch (direction){
+            case "inbound": return personRepository.findPartnership(id);
+            case "outbound": return personRepository.findPartners(id);
+            default: return null;
+        }
     }
 }

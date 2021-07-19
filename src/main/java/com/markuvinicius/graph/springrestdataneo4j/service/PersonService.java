@@ -5,6 +5,7 @@ import com.markuvinicius.graph.springrestdataneo4j.exception.ResourceNotFoundExc
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public interface PersonService {
@@ -14,4 +15,6 @@ public interface PersonService {
     public Person save(Person person);
 
     public Person findById(UUID id) throws ResourceNotFoundException;
+
+    public Set<Person> findPartnership(UUID id, Optional<String> direction) throws ResourceNotFoundException;
 }
